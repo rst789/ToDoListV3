@@ -1,12 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import './Todo.css';
+import {toast, ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function Task({ task, index, completeTask, removeTask }) {
+    const event = new Date('September 26, 2022 22:21:00 GMT-04:00');
+
+    const notify = () => toast('Reminder', { delay: 1000 });
+    const [date, setDate] = useState(new Date());
+
+    // console.log(event-date);
+
+    useEffect(() => {
+        const timer = setInterval(() => setDate(new Date()), 1000);
+        return function cleanup() {
+            clearInterval(timer)
+        }
+    });
+
+    // eslint-disable-next-line no-unused-vars
+    function componentDidMount() {
+        setInterval(() => {
+            this.setState({
+                curTime : new Date().toLocaleString()
+            })
+        }, 1000);
+    }
+
     return (
+        <div>
         <div className="task" style={{ textDecoration: task.completed ? "line-through" : "" }}>
             {task.title}
             <button style={{ background: "red" }} onClick={() => removeTask(index)}>x</button>
             <button onClick={() => completeTask(index)}>Complete</button>
+            <button onClick={notify} className={"B1"}>Notify!</button>
+            <ToastContainer />
+        </div>
         </div>
     );
 }
@@ -71,6 +100,7 @@ function Todo() {
 
     return (
         <div className="todo-container">
+
             <div className="header">Pending tasks ({tasksRemaining})</div>
             <div className="tasks">
                 {tasks.map((task, index) => (
