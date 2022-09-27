@@ -4,31 +4,29 @@ import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 function Task({ task, index, completeTask, removeTask }) {
-    const event = new Date('September 26, 2022 22:21:00 GMT-04:00');
 
-    const notify = () => toast('Reminder', { delay: 1000 });
-    const [date, setDate] = useState(new Date());
-
-    // console.log(event-date);
+    const [timer0, setTimer0] = useState();
 
     useEffect(() => {
-        const timer = setInterval(() => setDate(new Date()), 1000);
-        return function cleanup() {
-            clearInterval(timer)
-        }
-    });
+        document.body.addEventListener("click", event => {
+            console.log(event.target.value)
+            // toast("Reminder", { delay: event.target.toString() } )
+        })
+    }, [])
 
-    // eslint-disable-next-line no-unused-vars
-    function componentDidMount() {
-        setInterval(() => {
-            this.setState({
-                curTime : new Date().toLocaleString()
-            })
-        }, 1000);
-    }
+    const notify = () => toast('Reminder', { delay: timer0 });
 
     return (
         <div>
+            {/*Maybe it's select?*/}
+            <select id="Timer"
+                    value={timer0}
+                    onChange={(e) => setTimer0(e.target.value)}>
+                <option value="1000">1 Seconds</option>
+                <option value="5000">5 Seconds</option>
+                <option value="10000">10 Seconds</option>
+            </select>
+            <h4>Selected Timer: {timer0}</h4>
         <div className="task" style={{ textDecoration: task.completed ? "line-through" : "" }}>
             {task.title}
             <button style={{ background: "red" }} onClick={() => removeTask(index)}>x</button>
@@ -97,7 +95,6 @@ function Todo() {
         newTasks.splice(index, 1);
         setTasks(newTasks);
     };
-
     return (
         <div className="todo-container">
 
