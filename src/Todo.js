@@ -1,41 +1,53 @@
-import React, { useState, useEffect } from 'react';
-import './Todo.css';
+import React, {useEffect, useState} from 'react';
 import {toast, ToastContainer} from "react-toastify";
+import './Todo.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 function Task({ task, index, completeTask, removeTask }) {
-
     const [timer0, setTimer0] = useState();
 
     useEffect(() => {
         document.body.addEventListener("click", event => {
             console.log(event.target.value)
-            // toast("Reminder", { delay: event.target.toString() } )
+            // toast("Reminder", { delay: event.target.value } )
         })
-    }, [])
+    }, []);
 
-    const notify = () => toast('Reminder', { delay: timer0 });
+    const notify = () => toast('Reminder', { delay: {timer0} });
+
+    const x = document.getElementById("Timer");
+    let xVal = "";
+    if(x) {
+        xVal = x.value;
+    }
+    console.log(xVal);
 
     return (
         <div>
             {/*Maybe it's select?*/}
-            <select id="Timer"
-                    value={timer0}
-                    onChange={(e) => setTimer0(e.target.value)}>
-                <option value="1000">1 Seconds</option>
-                <option value="5000">5 Seconds</option>
-                <option value="10000">10 Seconds</option>
+            <select
+                id="Timer"
+                value={timer0}
+                onChange={(e) => setTimer0(e.target.value)}>
+                <option value="1000" id="timer1">1 Seconds</option>
+                <option value="5000" id="timer5">5 Seconds</option>
+                <option value="10000" id="timer10">10 Seconds</option>
             </select>
             <h4>Selected Timer: {timer0}</h4>
         <div className="task" style={{ textDecoration: task.completed ? "line-through" : "" }}>
             {task.title}
             <button style={{ background: "red" }} onClick={() => removeTask(index)}>x</button>
             <button onClick={() => completeTask(index)}>Complete</button>
-            <button onClick={notify} className={"B1"}>Notify!</button>
+            <button onClick={notiNew(xVal)} className={"B1"}>Notify!</button>
             <ToastContainer />
         </div>
         </div>
     );
+}
+
+function notiNew(Number) {
+    console.log(parseInt(Number.toString()));
+    return () => toast('Reminder', {delay: parseInt(Number.toString())});
 }
 
 function CreateTask({ addTask }) {
