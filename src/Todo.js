@@ -24,7 +24,7 @@ function Task({ task, index, completeTask, removeTask }) {
 
 function TimerCountDown() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [timer0, setTimer0] = useState(1000);
+    const [timer0, setTimer0] = useState();
 
     const x = document.getElementById("Timer");
     let xVal = "";
@@ -43,7 +43,7 @@ function TimerCountDown() {
                 <option value="5000" id="timer5">5 Seconds</option>
                 <option value="10000" id="timer10">10 Seconds</option>
             </select>
-            <h4>Selected Timer: {timer0}</h4>
+            <div value="0" id="TimerUpdated"></div>
             <button onClick={notiNew(xVal)} className={"B1"}>Notify!</button>
         </div>
     );
