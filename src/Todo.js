@@ -4,27 +4,37 @@ import './Todo.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 function Task({ task, index, completeTask, removeTask }) {
-    const [timer0, setTimer0] = useState();
-
     useEffect(() => {
         document.body.addEventListener("click", event => {
-            console.log(event.target.value)
-            // toast("Reminder", { delay: event.target.value } )
+            console.log("Clicked value:",event.target.value)
         })
     }, []);
 
-    const notify = () => toast('Reminder', { delay: {timer0} });
+    return (
+        <div>
+        <div className="task" style={{ textDecoration: task.completed ? "line-through" : "" }}>
+            {task.title}
+            <button style={{ background: "red" }} onClick={() => removeTask(index)}>x</button>
+            <button onClick={() => completeTask(index)}>Complete</button>
+            <ToastContainer />
+        </div>
+        </div>
+    );
+}
+
+function TimerCountDown() {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [timer0, setTimer0] = useState(1000);
 
     const x = document.getElementById("Timer");
     let xVal = "";
     if(x) {
         xVal = x.value;
     }
-    console.log(xVal);
+    console.log("xVal in TCD:",xVal);
 
     return (
         <div>
-            {/*Maybe it's select?*/}
             <select
                 id="Timer"
                 value={timer0}
@@ -34,19 +44,13 @@ function Task({ task, index, completeTask, removeTask }) {
                 <option value="10000" id="timer10">10 Seconds</option>
             </select>
             <h4>Selected Timer: {timer0}</h4>
-        <div className="task" style={{ textDecoration: task.completed ? "line-through" : "" }}>
-            {task.title}
-            <button style={{ background: "red" }} onClick={() => removeTask(index)}>x</button>
-            <button onClick={() => completeTask(index)}>Complete</button>
             <button onClick={notiNew(xVal)} className={"B1"}>Notify!</button>
-            <ToastContainer />
-        </div>
         </div>
     );
 }
 
 function notiNew(Number) {
-    console.log(parseInt(Number.toString()));
+    // console.log(parseInt(Number.toString()));
     return () => toast('Reminder', {delay: parseInt(Number.toString())});
 }
 
@@ -107,9 +111,9 @@ function Todo() {
         newTasks.splice(index, 1);
         setTasks(newTasks);
     };
+
     return (
         <div className="todo-container">
-
             <div className="header">Pending tasks ({tasksRemaining})</div>
             <div className="tasks">
                 {tasks.map((task, index) => (
@@ -121,6 +125,7 @@ function Todo() {
                         key={index}
                     />
                 ))}
+                <TimerCountDown/>
             </div>
             <div className="create-task" >
                 <CreateTask addTask={addTask} />
